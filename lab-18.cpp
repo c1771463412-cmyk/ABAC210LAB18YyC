@@ -49,6 +49,21 @@ void Movie::addReview(double r, string c) {
     head = newReview;
 }
 
+// ~Movie() deletes all reviews when a Movie object is destroyed
+// argument: none
+// returns: none
+Movie::~Movie() {
+    Review *current = head;
+
+    while (current) {
+        head = current->next;
+        delete current;
+        current = head;
+    }
+
+    head = nullptr;
+}
+
 // output() displays the movie title, reviews, ratings, and average rating
 // arguments: none
 // returns: none
