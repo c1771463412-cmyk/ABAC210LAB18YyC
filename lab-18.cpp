@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <ctime>
 using namespace std;
 
 struct Review {
@@ -28,6 +29,52 @@ class Movie {
         void addReview(double, string);
         void output() const;
 };
+
+int main() {
+    srand(time(0));
+    cout << fixed << setprecision(1);
+
+    ifstream fin("input.txt");
+
+    if (!fin) {
+        cout << "Error opening input.txt" << endl;
+        return 1;
+    }
+
+    vector<string> comments;
+    string comment;
+
+    while (getline(fin, comment)) {
+        comments.push_back(comment);
+    }
+
+    fin.close();
+
+    vector<Movie> movies;
+
+    movies.push_back(Movie("Interstellar"));
+    movies.push_back(Movie("The Dark Knight"));
+    movies.push_back(Movie("Inception"));
+    movies.push_back(Movie("The Lord of the Rings"));
+
+    int commentIndex = 0;
+
+    for (int i = 0; i < movies.size(); i++) {
+        for (int j = 0; j < 3; j++) {
+            double rating = ((rand() % 41) + 10) / 10.0;
+
+            movies[i].addReview(rating, comments[commentIndex]);
+
+            commentIndex++;
+        }
+    }
+
+    for (int i = 0; i < movies.size(); i++) {
+        movies[i].output();
+    }
+
+    return 0;
+}
 
 // Movie() creates a Movie object with a title and an empty review list
 // arguments: a string containing the movie title
@@ -162,26 +209,4 @@ Movie& Movie::operator=(const Movie &other) {
     }
 
     return *this;
-}
-
-int main() {
-    ifstream fin("input.txt");
-
-    if (!fin) {
-        cout << "Error opening input.txt" << endl;
-        return 1;
-    }
-
-    vector<string> comments;
-    string comment;
-
-    while (getline(fin, comment)) {
-        comments.push_back(comment);
-    }
-
-    fin.close();
-
-    cout << "Comments read test: " << comments.size() << endl;
-
-    return 0;
 }
