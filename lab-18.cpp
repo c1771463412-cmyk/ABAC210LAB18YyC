@@ -31,11 +31,12 @@ class Movie {
 };
 
 int main() {
+    // Seed the random number generator using the current time
     srand(time(0));
-    cout << fixed << setprecision(1);
 
     ifstream fin("input.txt");
 
+    // Stop the program if the review file cannot be opened
     if (!fin) {
         cout << "Error opening input.txt" << endl;
         return 1;
@@ -59,8 +60,10 @@ int main() {
 
     int commentIndex = 0;
 
+    // Give each movie three reviews from input.txt
     for (int i = 0; i < movies.size(); i++) {
         for (int j = 0; j < 3; j++) {
+            // Generate a random rating from 1.0 to 5.0
             double rating = ((rand() % 41) + 10) / 10.0;
 
             movies[i].addReview(rating, comments[commentIndex]);
@@ -69,17 +72,7 @@ int main() {
         }
     }
 
-    // Test copy constructor
-    Movie copyMovie = movies[0];
-    cout << "\nTesting copy constructor:\n";
-    copyMovie.output();
-
-    // Test copy assignment operator
-    Movie assignedMovie("Test Movie");
-    assignedMovie = movies[1];
-    cout << "\nTesting copy assignment operator:\n";
-    assignedMovie.output();
-
+    // Display all movie reviews and averages
     for (int i = 0; i < movies.size(); i++) {
         movies[i].output();
     }
@@ -103,6 +96,8 @@ void Movie::addReview(double r, string c) {
 
     newReview->rating = r;
     newReview->comment = c;
+
+    // New node points to the old head, then becomes the new head
     newReview->next = head;
     head = newReview;
 }
@@ -113,6 +108,7 @@ void Movie::addReview(double r, string c) {
 Movie::~Movie() {
     Review *current = head;
 
+    // Delete each node one at a time to free dynamic memory
     while (current) {
         head = current->next;
         delete current;
@@ -134,6 +130,7 @@ void Movie::output() const {
     int count = 1;
     double total = 0.0;
 
+    // Traverse the linked list and output each review
     while (current) {
         cout << "> Review #" << count << ": "
              << current->rating << ": "
@@ -144,6 +141,7 @@ void Movie::output() const {
         current = current->next;
     }
 
+    // Calculate the average only if the movie has reviews
     if (count > 1) {
         double average = total / (count - 1);
         cout << "> Average: " << average << endl;
@@ -162,17 +160,20 @@ Movie::Movie(const Movie &other) {
     Review *current = other.head;
     Review *tail = nullptr;
 
+    // Copy every review into a new linked list
     while (current) {
         Review *newReview = new Review;
         newReview->rating = current->rating;
         newReview->comment = current->comment;
         newReview->next = nullptr;
 
+        // First copied node becomes the head
         if (!head) {
             head = newReview;
             tail = newReview;
         }
         else {
+            // Add later nodes to the end to preserve review order
             tail->next = newReview;
             tail = newReview;
         }
@@ -185,9 +186,11 @@ Movie::Movie(const Movie &other) {
 // arguments: another Movie object passed by reference
 // returns: the current Movie object
 Movie& Movie::operator=(const Movie &other) {
+    // Avoid deleting and copying the same object into itself
     if (this != &other) {
         Review *current = head;
 
+        // Delete the current review list first
         while (current) {
             head = current->next;
             delete current;
@@ -200,6 +203,7 @@ Movie& Movie::operator=(const Movie &other) {
         current = other.head;
         Review *tail = nullptr;
 
+        // Create a completely new copy of the other review list
         while (current) {
             Review *newReview = new Review;
             newReview->rating = current->rating;
