@@ -69,6 +69,17 @@ int main() {
         }
     }
 
+    // Test copy constructor
+    Movie copyMovie = movies[0];
+    cout << "\nTesting copy constructor:\n";
+    copyMovie.output();
+
+    // Test copy assignment operator
+    Movie assignedMovie("Test Movie");
+    assignedMovie = movies[1];
+    cout << "\nTesting copy assignment operator:\n";
+    assignedMovie.output();
+
     for (int i = 0; i < movies.size(); i++) {
         movies[i].output();
     }
