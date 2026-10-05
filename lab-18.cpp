@@ -1,6 +1,7 @@
 // COMSC-210-5293 | Lab 18 | Yuyi Chen
 
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 #include <fstream>
@@ -47,3 +48,34 @@ void Movie::addReview(double r, string c) {
     newReview->next = head;
     head = newReview;
 }
+
+// output() displays the movie title, reviews, ratings, and average rating
+// arguments: none
+// returns: none
+void Movie::output() const {
+    cout << fixed << setprecision(1);
+
+    cout << "Movie Title: " << title << endl;
+
+    Review *current = head;
+    int count = 1;
+    double total = 0.0;
+
+    while (current) {
+        cout << "> Review #" << count << ": "
+             << current->rating << ": "
+             << current->comment << endl;
+        
+        total += current->rating;
+        count++;
+        current = current->next;
+    }
+
+    if (count > 1) {
+        double average = total / (count - 1);
+        cout << "> Average: " << average << endl;
+    }
+
+    cout << endl;
+}
+
