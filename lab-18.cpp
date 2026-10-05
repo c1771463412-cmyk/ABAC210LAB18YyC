@@ -28,3 +28,22 @@ class Movie {
         void output() const;
 };
 
+// Movie() creates a Movie object with a title and an empty review list
+// arguments: a string containing the movie title
+// returns: none
+Movie::Movie(string t) {
+    title = t;
+    head = nullptr;
+}
+
+// addReview() adds a new review to the head of the linked list
+// arguments: a rating and a review comment
+// returns: none
+void Movie::addReview(double r, string c) {
+    Review *newReview = new Review;
+
+    newReview->rating = r;
+    newReview->comment = c;
+    newReview->next = head;
+    head = newReview;
+}
