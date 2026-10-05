@@ -164,3 +164,24 @@ Movie& Movie::operator=(const Movie &other) {
     return *this;
 }
 
+int main() {
+    ifstream fin("input.txt");
+
+    if (!fin) {
+        cout << "Error opening input.txt" << endl;
+        return 1;
+    }
+
+    vector<string> comments;
+    string comment;
+
+    while (getline(fin, comment)) {
+        comments.push_back(comment);
+    }
+
+    fin.close();
+
+    cout << "Comments read test: " << comments.size() << endl;
+
+    return 0;
+}
