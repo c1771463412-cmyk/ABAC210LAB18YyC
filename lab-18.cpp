@@ -94,3 +94,32 @@ void Movie::output() const {
     cout << endl;
 }
 
+// Movie() creates a deep copy of another Movie object
+// arguments: another Movie object passed by reference
+// returns: none
+Movie::Movie(const Movie &other) {
+    title = other.title;
+    head = nullptr;
+
+    Review *current = other.head;
+    Review *tail = nullptr;
+
+    while (current) {
+        Review *newReview = new Review;
+        newReview->rating = current->rating;
+        newReview->comment = current->comment;
+        newReview->next = nullptr;
+
+        if (!head) {
+            head = newReview;
+            tail = newReview;
+        }
+        else {
+            tail->next = newReview;
+            tail = newReview;
+        }
+
+        current = current->next;
+    }
+}
+
