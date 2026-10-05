@@ -123,3 +123,44 @@ Movie::Movie(const Movie &other) {
     }
 }
 
+// operator=() copies another Movie object using a deep copy
+// arguments: another Movie object passed by reference
+// returns: the current Movie object
+Movie& Movie::operator=(const Movie &other) {
+    if (this != &other) {
+        Review *current = head;
+
+        while (current) {
+            head = current->next;
+            delete current;
+            current = head;
+        }
+
+        head = nullptr;
+        title = other.title;
+
+        current = other.head;
+        Review *tail = nullptr;
+
+        while (current) {
+            Review *newReview = new Review;
+            newReview->rating = current->rating;
+            newReview->comment = current->comment;
+            newReview->next = nullptr;
+
+            if (!head) {
+                head = newReview;
+                tail = newReview;
+            }
+            else {
+                tail->next = newReview;
+                tail = newReview;
+            }
+
+            current = current->next;
+        }
+    }
+
+    return *this;
+}
+
